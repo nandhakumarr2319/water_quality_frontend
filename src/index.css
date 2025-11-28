@@ -1,0 +1,32 @@
+/* Reset default browser styles */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+  background: transparent;   /* ChatBox provides its own sky & water */
+  color: #0f172a;            /* Normal readable dark text */
+}
+
+/* Remove old fixed chatbox limit */
+.chatbox {
+  max-width: none;
+}
+
+/* Allow ONLY water background canvas to fill screen */
+.water-bg-light {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* DO NOT affect all other canvases like thinking blob */
+canvas {
+  position: static;
+  width: auto;
+  height: auto;
+}
