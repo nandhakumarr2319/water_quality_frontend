@@ -1,30 +1,80 @@
+// src/api.js
+
 const API_BASE = process.env.REACT_APP_BACKEND_URL;
 
+
+/**
+ * 🔐 Login API — Authenticates user via FastAPI (Supabase backend)
+ * @param {string} email
+ * @param {string} password
+ * @returns {Promise<{user_id: string, email: string}>}
+ */
 export async function loginAPI(email, password) {
-  const response = await fetch(`${API_BASE}/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.detail || "Invalid email or password");
-  return data;
+  try {
+    const response = await fetch(`${API_BASE }/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.detail || "Invalid email or password");
+    }
+
+    return data; // { user_id, email }
+  } catch (err) {
+    console.error("Login error:", err);
+    throw err;
+  }
 }
 
+/**
+ * 💬 Chat API — Sends user question to FastAPI + Ollama model
+ * @param {string} user_id
+ * @param {string} message
+ * @returns {Promise<{reply: string, plot?: string}>}
+ */
 export async function chatAPI(user_id, message) {
-  const response = await fetch(`${API_BASE}/chat`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ user_id, message }),
-  });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.detail || "Chat request failed");
-  return data;
+  try {
+    const response = await fetch(`${API_BASE }/chat`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ user_id, message }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.detail || "Chat request failed");
+    }
+
+    return data;
+  } catch (err) {
+    console.error("Chat API error:", err);
+    throw err;
+  }
 }
 
+/**
+ * 🩺 Ping Server — Tests if backend & Supabase are online
+ * @returns {Promise<{status: string}>}
+ */
 export async function pingServer() {
-  const response = await fetch(`${API_BASE}/ping`);
-  const data = await response.json();
-  if (data.ping === "pong" || data.status === "alive") return { status: "ok" };
-  return { status: "error" };
+  try {
+    const response = await fetch(`${API_BASE}/ping`);
+    const data = await response.json();
+    if (data.ping === "pong" || data.status === "alive") {
+      return { status: "ok" };
+    }
+    return { status: "error" };
+  } catch (err) {
+    console.error("Ping failed:", err);
+    return { status: "error" };
+  }
 }
