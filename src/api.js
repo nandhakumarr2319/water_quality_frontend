@@ -1,32 +1,19 @@
-// src/api.js
-
 const API_BASE = import.meta.env.VITE_BACKEND_URL;
 
-
-
 /**
- * 🔐 Login API — Authenticates user via FastAPI (Supabase backend)
- * @param {string} email
- * @param {string} password
- * @returns {Promise<{user_id: string, email: string}>}
+ * Login API — Authenticates user via FastAPI (Supabase backend)
  */
 export async function loginAPI(email, password) {
   try {
-    const response = await fetch(`${API_BASE }/login`, {
+    const response = await fetch(`${API_BASE}/login`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
 
     const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.detail || "Invalid email or password");
-    }
-
-    return data; // { user_id, email }
+    if (!response.ok) throw new Error(data.detail || "Invalid email or password");
+    return data;  // { user_id, email }
   } catch (err) {
     console.error("Login error:", err);
     throw err;
@@ -34,27 +21,18 @@ export async function loginAPI(email, password) {
 }
 
 /**
- * 💬 Chat API — Sends user question to FastAPI + Ollama model
- * @param {string} user_id
- * @param {string} message
- * @returns {Promise<{reply: string, plot?: string}>}
+ * Chat API — Sends message to FastAPI + Ollama/HF
  */
 export async function chatAPI(user_id, message) {
   try {
-    const response = await fetch(`${API_BASE }/chat`, {
+    const response = await fetch(`${API_BASE}/chat`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user_id, message }),
     });
 
     const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.detail || "Chat request failed");
-    }
-
+    if (!response.ok) throw new Error(data.detail || "Chat request failed");
     return data;
   } catch (err) {
     console.error("Chat API error:", err);
@@ -63,13 +41,13 @@ export async function chatAPI(user_id, message) {
 }
 
 /**
- * 🩺 Ping Server — Tests if backend & Supabase are online
- * @returns {Promise<{status: string}>}
+ * Ping Server — Confirms backend is online
  */
 export async function pingServer() {
   try {
     const response = await fetch(`${API_BASE}/ping`);
     const data = await response.json();
+
     if (data.ping === "pong" || data.status === "alive") {
       return { status: "ok" };
     }
