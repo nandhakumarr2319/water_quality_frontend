@@ -1,106 +1,166 @@
-/* Center everything */
+/* Background */
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(180deg, #e6f7ff, #d8ecff, #cfe4ff);
+  font-family: "Poppins", sans-serif;
+  overflow: hidden;
+}
+
+/* Container */
 .login-container {
+  position: relative;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  width: 100%;
 }
 
-/* Glass login card */
-.login-box {
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 20px;
-  padding: 40px 30px;
-  width: 360px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(14px);
+/* Glass Card */
+.login-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(18px);
+  padding: 48px 42px;
+  width: 480px;
+  border-radius: 28px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
   text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  z-index: 10;
   animation: fadeIn 0.6s ease;
 }
 
-/* Title + subtitle */
-.login-title {
-  margin-bottom: 5px;
-  color: #1e3a8a;
-  font-size: 1.8rem;
-  font-weight: 600;
-}
-
-.login-subtitle {
-  color: #64748b;
-  font-size: 0.95rem;
+/* Logo */
+.login-logo {
+  width: 130px;
   margin-bottom: 20px;
 }
 
-/* Inputs */
-.login-box input {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background: rgba(255, 255, 255, 0.9);
-  font-size: 15px;
-  color: #0f172a;
-  transition: all 0.2s ease;
+/* Title */
+.login-card h2 {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 4px;
 }
 
-.login-box input:focus {
+.login-sub {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 18px;
+}
+
+/* Engine Status Badge */
+.engine-badge {
+  background: #dbecff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  color: #0f58c4;
+  font-weight: 600;
+  width: fit-content;
+  margin: 0 auto 24px auto;
+}
+
+/* Input Wrapper */
+.input-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+/* INPUT FIELDS — Nice big width */
+.login-input {
+  width: 100%;
+  height: 46px;
+  padding: 0 18px;
+  border-radius: 30px;
+  border: 1px solid #cdd9f2;
+  background: rgba(255,255,255,0.65);
+  font-size: 15px;
+  transition: 0.25s;
+}
+
+.login-input:focus {
   outline: none;
   border-color: #3b82f6;
-  box-shadow: 0 0 8px rgba(59, 130, 246, 0.2);
+  box-shadow: 0 0 10px rgba(59,130,246,0.3);
 }
 
-/* Button */
-.login-box button {
+/* Password Eye */
+.password-wrapper {
+  position: relative;
   width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #3b82f6, #60a5fa);
-  color: white;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  margin-top: 15px;
-  transition: all 0.3s ease;
 }
 
-.login-box button:hover {
-  background: linear-gradient(135deg, #2563eb, #3b82f6);
-  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+.toggle-eye {
+  position: absolute;
+  right: 18px;
+  top: 11px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* Login Button */
+.login-btn {
+  width: 100%;
+  height: 46px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 30px;
+  font-size: 17px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  background: linear-gradient(135deg, #2672ff, #5aa8ff);
+  transition: 0.25s;
+}
+
+.login-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,123,255,0.35);
 }
 
 /* Error */
 .error {
-  color: #dc2626;
-  font-size: 0.9rem;
-  margin-top: 5px;
+  margin-top: 12px;
+  color: #e11d48;
+  font-weight: 600;
 }
 
-/* Note */
-.note {
-  margin-top: 20px;
-  font-size: 0.85rem;
-  color: #475569;
+/* Waves */
+.wave {
+  position: absolute;
+  bottom: 0;
+  width: 200%;
+  height: 180px;
+  left: 0;
+  background-repeat: repeat-x;
+  opacity: 0.35;
+  animation: waveMove 8s linear infinite;
 }
 
-.note span {
-  color: #0ea5e9;
-  font-weight: 500;
+.wave1 {
+  background-image: url('/wave1.svg');
+  animation-duration: 14s;
 }
 
-/* Fade animation */
+.wave2 {
+  background-image: url('/wave2.svg');
+  animation-duration: 20s;
+  opacity: 0.25;
+}
+
+.wave3 {
+  background-image: url('/wave3.svg');
+  animation-duration: 26s;
+  opacity: 0.2;
+}
+
+@keyframes waveMove {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

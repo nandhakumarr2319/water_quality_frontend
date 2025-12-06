@@ -9,16 +9,24 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [fade, setFade] = useState("fade-in");
 
-  const handleLogin = (data) => {
+  // ===============================
+  // LOGIN → Smooth Fade Animation
+  // ===============================
+  const handleLogin = (userData) => {
     setFade("fade-out");
+
     setTimeout(() => {
-      setUser(data);
+      setUser(userData);
       setFade("fade-in");
     }, 350);
   };
 
+  // ===============================
+  // LOGOUT → Smooth Fade Animation
+  // ===============================
   const handleLogout = () => {
     setFade("fade-out");
+
     setTimeout(() => {
       setUser(null);
       setFade("fade-in");
@@ -27,10 +35,10 @@ export default function App() {
 
   return (
     <>
-      {/* Global background */}
+      {/* GLOBAL WATER BACKGROUND */}
       <WaterScene />
 
-      {/* If NOT logged in → show glass login centered */}
+      {/* LOGIN PAGE */}
       {!user ? (
         <div className="app-container">
           <div className={`transition-wrapper ${fade}`}>
@@ -38,7 +46,7 @@ export default function App() {
           </div>
         </div>
       ) : (
-        // If LOGGED IN → show full-screen ChatBox (NO glass wrapper)
+        /* CHAT UI PAGE */
         <div className={`transition-wrapper ${fade}`} style={{ height: "100vh" }}>
           <ChatBox user={user} onLogout={handleLogout} />
         </div>

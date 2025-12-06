@@ -1,8 +1,18 @@
+// ================================
+// Debug logs (safe in dev only)
+// ================================
+console.log("🔧 Loaded BACKEND_URL =", import.meta.env.VITE_BACKEND_URL);
+
 const API_BASE = import.meta.env.VITE_BACKEND_URL;
 
-/**
- * Login API — Authenticates user via FastAPI (Supabase backend)
- */
+// Safety check
+if (!API_BASE) {
+  console.error("❌ ERROR: VITE_BACKEND_URL is NOT defined!");
+}
+
+// ================================
+// LOGIN API
+// ================================
 export async function loginAPI(email, password) {
   try {
     const response = await fetch(`${API_BASE}/login`, {
@@ -12,17 +22,21 @@ export async function loginAPI(email, password) {
     });
 
     const data = await response.json();
-    if (!response.ok) throw new Error(data.detail || "Invalid email or password");
-    return data;  // { user_id, email }
+
+    if (!response.ok) {
+      throw new Error(data.detail || "Invalid email or password");
+    }
+
+    return data;
   } catch (err) {
-    console.error("Login error:", err);
+    console.error("❌ Login error:", err);
     throw err;
   }
 }
 
-/**
- * Chat API — Sends message to FastAPI + Ollama/HF
- */
+// ================================
+// CHAT API
+// ================================
 export async function chatAPI(user_id, message) {
   try {
     const response = await fetch(`${API_BASE}/chat`, {
@@ -32,17 +46,21 @@ export async function chatAPI(user_id, message) {
     });
 
     const data = await response.json();
-    if (!response.ok) throw new Error(data.detail || "Chat request failed");
+
+    if (!response.ok) {
+      throw new Error(data.detail || "Chat request failed");
+    }
+
     return data;
   } catch (err) {
-    console.error("Chat API error:", err);
+    console.error("❌ Chat API error:", err);
     throw err;
   }
 }
 
-/**
- * Ping Server — Confirms backend is online
- */
+// ================================
+// PING SERVER
+// ================================
 export async function pingServer() {
   try {
     const response = await fetch(`${API_BASE}/ping`);
@@ -53,7 +71,7 @@ export async function pingServer() {
     }
     return { status: "error" };
   } catch (err) {
-    console.error("Ping failed:", err);
+    console.error("❌ Ping failed:", err);
     return { status: "error" };
   }
 }
