@@ -1,0 +1,58 @@
+/* ---------------------------------------------
+   GLOBAL RESET
+----------------------------------------------*/
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+  background: transparent;     /* Background handled by scenes */
+  color: #0f172a;
+  overflow: hidden;            /* Prevent scrolling for full-screen layout */
+}
+
+/* ---------------------------------------------
+   FIX: Remove old ChatBox container restrictions
+----------------------------------------------*/
+.chatbox {
+  max-width: none !important;
+}
+
+/* ---------------------------------------------
+   BACKGROUND WATER CANVAS (full-screen)
+----------------------------------------------*/
+.water-bg-light {
+  position: fixed !important;
+  inset: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  pointer-events: none;
+  z-index: -1;                 /* Behind everything */
+}
+
+/* ---------------------------------------------
+   CANVAS SAFETY RULE (Do NOT break thinking blob)
+----------------------------------------------*/
+canvas:not(.water-bg-light) {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+
+/* ---------------------------------------------
+   RESPONSIVE FIXES
+----------------------------------------------*/
+@media (max-width: 768px) {
+  body, html, #root {
+    overflow: auto;    /* Allow scrolling only on mobile */
+  }
+}

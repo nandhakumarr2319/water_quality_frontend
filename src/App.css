@@ -1,0 +1,49 @@
+/* =============================
+   🌊 EyeNetAqua App Background
+   ============================= */
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+
+  /* Light Aqua Gradient */
+  background: linear-gradient(180deg, #dff6ff 0%, #fafdff 100%);
+  overflow: hidden;
+  position: relative;
+
+  font-family: "Poppins", sans-serif;
+}
+
+/* =============================
+   🎬 Smooth Fade Transitions
+   ============================= */
+.transition-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: opacity 0.45s ease, transform 0.4s ease;
+}
+
+.fade-in {
+  opacity: 1;
+  transform: translateY(0px);
+}
+
+.fade-out {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+/* =============================
+   📱 Responsive Login Centering
+   ============================= */
+@media (max-width: 600px) {
+  .app-container {
+    background: linear-gradient(180deg, #e9f8ff 0%, #ffffff 100%);
+  }
+}
