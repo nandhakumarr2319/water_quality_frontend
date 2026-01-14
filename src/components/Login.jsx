@@ -68,7 +68,7 @@ export default function Login({ onLogin }) {
       <WaterScene />
 
       {/* LOGIN CARD */}
-      <form className="login-card" onSubmit={handleLogin}>
+     <form className="login-card responsive-card" onSubmit={handleLogin}>
         <img src="/logo.png" className="login-logo" alt="EyeNetAqua" />
 
         <h2 className="login-title">Welcome Back</h2>

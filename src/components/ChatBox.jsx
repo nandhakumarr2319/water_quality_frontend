@@ -72,6 +72,7 @@ export default function ChatBox({ user, onLogout }) {
   ========================================================= */
   const sendMessage = async (textOverride) => {
     const text = textOverride || input;
+    if (loading) return;
     if (!text.trim()) return;
 
     // 1. Add User Message
@@ -80,11 +81,11 @@ export default function ChatBox({ user, onLogout }) {
     setLoading(true);
 
  try {
-      const effectiveUserId =
-      user.user_id ||
-      user.id ||
-      user.email ||
-      "test_user";
+      const effectiveUserId = user.user_id || user.id;
+      if (!effectiveUserId) {
+        throw new Error("Missing user_id");
+      }
+
 
 // 🧪 DEBUG LOG (ADD HERE)
       console.log("🧪 Chat request payload:", {
@@ -99,10 +100,10 @@ const res = await chatAPI(effectiveUserId, text);
       // 3. Process Charts (Backend sends generic Base64 strings)
       // We convert them to objects: { img: "base64...", title: "Chart X" }
       const processedPlots = (res.charts || [])
-        .filter(b64 => typeof b64 === "string" && b64.length > 50)
-        .map((base64Str, index) => ({
-          img: base64Str,
-          title: `Analysis Chart ${index + 1}`
+        .filter(p => p && typeof p === "object" && p.img)
+        .map((p, index) => ({
+          img: p.img,
+          title: p.title || `Analysis Chart ${index + 1}`
         }));
 
       // Determine Layout
@@ -110,12 +111,16 @@ const res = await chatAPI(effectiveUserId, text);
         processedPlots.length >= 3 ? "thumbnails" :
         processedPlots.length === 1 ? "vertical" : "horizontal"
       );
-      const finalBotText =
-        res.response &&
+      let finalBotText = res.response;
+
+      if (
+        /chart|graph|plot/i.test(text) &&
         processedPlots.length === 0 &&
-        /chart|graph|plot/i.test(text)
-          ? res.response + "\n\n⚠️ No chart could be generated for this request."
-          : res.response;
+        !/no chart|couldn't|not available/i.test(res.response || "")
+    ) {
+      finalBotText += "\n\n⚠️ No chart could be generated for this request.";
+    }
+
 
 
       // 4. Add Bot Response
@@ -329,7 +334,12 @@ const res = await chatAPI(effectiveUserId, text);
           }}
         />
 
-        <button className="action-btn" onClick={() => sendMessage()}>
+        <button
+          className="action-btn"
+          onClick={() => sendMessage()}
+          disabled={loading}
+        >
+
           ➤
         </button>
       </div>

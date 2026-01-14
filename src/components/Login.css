@@ -164,3 +164,81 @@ body {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+/* ================================
+   MOBILE FIXES (DO NOT REMOVE)
+================================ */
+
+/* Allow mobile keyboard scrolling */
+@media (max-width: 768px) {
+  body {
+    overflow-y: auto;
+  }
+}
+
+/* Center card properly on mobile */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 16px;
+    align-items: flex-start;
+  }
+
+  .login-card {
+    width: 100%;
+    max-width: 360px;
+    padding: 28px 22px;
+    border-radius: 20px;
+    margin-top: 8vh;
+  }
+
+  .login-logo {
+    width: 90px;
+    margin-bottom: 14px;
+  }
+
+  .login-card h2 {
+    font-size: 22px;
+  }
+
+  .login-sub {
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+
+  .engine-badge {
+    font-size: 12px;
+    padding: 6px 12px;
+    margin-bottom: 18px;
+  }
+
+  .login-input {
+    height: 48px;
+    font-size: 15px;
+    padding: 0 16px;
+  }
+
+  /* Fix password eye overlap */
+  .toggle-eye {
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+  }
+
+  .login-btn {
+    height: 48px;
+    font-size: 16px;
+  }
+}
+
+/* Prevent waves & canvas from blocking UI */
+@media (max-width: 480px) {
+  .wave {
+    height: 120px;
+  }
+
+  canvas {
+    max-width: 100vw;
+    max-height: 100vh;
+    pointer-events: none;
+  }
+}
