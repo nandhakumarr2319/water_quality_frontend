@@ -12,16 +12,13 @@ export async function loginAPI(email, password) {
   try {
     const response = await fetch(`${API_BASE}/login`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ email, password }),
     });
 
-    let data;
-    try {
-      data = await response.json();
-    } catch {
-      throw new Error("Invalid login response from server");
-    }
+    const data = await response.json();
 
     if (!response.ok) {
       throw new Error(data.detail || "Invalid email or password");
@@ -35,47 +32,44 @@ export async function loginAPI(email, password) {
 }
 
 // ================================
-// CHAT API (SAFE & DEFENSIVE)
+// CHAT API (JSON – FIXED & FINAL)
 // ================================
-export async function chatAPI(user_id, message, file = null) {
+export async function chatAPI(user_id, message) {
   try {
-    const formData = new FormData();
-
-    // SAFETY: Always send a valid string user_id
+    // SAFETY: ensure valid string user_id
     const safeUserId =
       user_id !== undefined && user_id !== null
         ? String(user_id)
-        : "test_user";
+        : "";
 
-    console.log(
-      `🚀 Sending Chat -> ID: ${safeUserId}, Prompt: ${message}`
-    );
-
-    formData.append("user_id", safeUserId);
-    formData.append("prompt", message);
-
-    if (file) {
-      formData.append("file", file);
+    if (!safeUserId) {
+      throw new Error("Missing user_id");
     }
+
+    console.log("🚀 Sending Chat Payload:", {
+      user_id: safeUserId,
+      prompt: message,
+    });
 
     const response = await fetch(`${API_BASE}/chat`, {
       method: "POST",
-      body: formData,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: safeUserId,
+        prompt: message,
+      }),
     });
 
-    let data;
-    try {
-      data = await response.json();
-    } catch (err) {
-      throw new Error("Invalid JSON response from server");
-    }
+    const data = await response.json();
 
     if (!response.ok) {
       console.error("❌ Backend error response:", data);
       throw new Error(data.detail || "Chat request failed");
     }
 
-    // Normalize response shape (important for UI)
+    // Normalize response for UI
     return {
       response: data.response || "",
       charts: Array.isArray(data.charts) ? data.charts : [],
