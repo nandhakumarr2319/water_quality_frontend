@@ -81,17 +81,19 @@ export default function ChatBox({ user, onLogout }) {
     setLoading(true);
 
  try {
-      const effectiveUserId = user.user_id || user.id;
+      const effectiveUserId = user?.user_id || user?.id;
       if (!effectiveUserId) {
         throw new Error("Missing user_id");
       }
 
 
 // 🧪 DEBUG LOG (ADD HERE)
-      console.log("🧪 Chat request payload:", {
-      user_id: effectiveUserId,
-      text,
+console.log("🧪 Chat request payload:", {
+  user_id: effectiveUserId,
+  prompt: text,
 });
+
+
 
 // 2. Call API
 const res = await chatAPI(effectiveUserId, text);
@@ -113,11 +115,7 @@ const res = await chatAPI(effectiveUserId, text);
       );
       let finalBotText = res.response;
 
-      if (
-        /chart|graph|plot/i.test(text) &&
-        processedPlots.length === 0 &&
-        !/no chart|couldn't|not available/i.test(res.response || "")
-    ) {
+     {
       finalBotText += "\n\n⚠️ No chart could be generated for this request.";
     }
 
