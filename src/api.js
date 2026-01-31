@@ -33,35 +33,40 @@ export async function loginAPI(email, password) {
     throw err;
   }
 }
+
 // ================================
-// CHAT API (JSON — MATCHES BACKEND)
+// CHAT API (SAFE & DEFENSIVE)
 // ================================
-export async function chatAPI(user_id, message) {
+export async function chatAPI(user_id, message, file = null) {
   try {
+    const formData = new FormData();
+
+    // SAFETY: Always send a valid string user_id
     const safeUserId =
       user_id !== undefined && user_id !== null
         ? String(user_id)
-        : "";
+        : "test_user";
 
     console.log(
       `🚀 Sending Chat -> ID: ${safeUserId}, Prompt: ${message}`
     );
 
+    formData.append("user_id", safeUserId);
+    formData.append("prompt", message);
+
+    if (file) {
+      formData.append("file", file);
+    }
+
     const response = await fetch(`${API_BASE}/chat`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user_id: safeUserId,
-        prompt: message,
-      }),
+      body: formData,
     });
 
     let data;
     try {
       data = await response.json();
-    } catch {
+    } catch (err) {
       throw new Error("Invalid JSON response from server");
     }
 
@@ -70,6 +75,7 @@ export async function chatAPI(user_id, message) {
       throw new Error(data.detail || "Chat request failed");
     }
 
+    // Normalize response shape (important for UI)
     return {
       response: data.response || "",
       charts: Array.isArray(data.charts) ? data.charts : [],
@@ -77,7 +83,7 @@ export async function chatAPI(user_id, message) {
     };
   } catch (err) {
     console.error("❌ Chat API error:", err);
-    throw err;
+    throw err; // UI MUST catch this
   }
 }
 
